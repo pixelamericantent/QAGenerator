@@ -1475,7 +1475,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      218
+      204
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1484,10 +1484,6 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
-    ],
-    [
-      "Structural : Frame Tent : Poles : 16'1",
-      7
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1504,10 +1500,6 @@ var bomLogic =
     [
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       7
-    ],
-    [
-      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
-      14
     ]
   ],
   "Frame:40 Frame:40 Frame Packages:40x40 Frame Pole/Fitting Package": [
@@ -1607,7 +1599,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      154
+      148
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1616,10 +1608,6 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
-    ],
-    [
-      "Structural : Frame Tent : Poles : 16'1",
-      3
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1636,10 +1624,6 @@ var bomLogic =
     [
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       3
-    ],
-    [
-      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
-      6
     ]
   ],
   "Frame:40 Frame:40 Frame Packages:40x80 Frame Pole/Fitting Package": [
@@ -1681,7 +1665,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      186
+      176
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1690,10 +1674,6 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
-    ],
-    [
-      "Structural : Frame Tent : Poles : 16'1",
-      5
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1711,10 +1691,6 @@ var bomLogic =
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       5
     ],
-    [
-      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
-      10
-    ]
   ],
   "Accessories:Frame Fittings:6-way Crown": [
     [
