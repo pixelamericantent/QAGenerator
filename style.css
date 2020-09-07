@@ -43,3 +43,9 @@ textarea {
 .small {
   font-size: .5em;
 }
+
+.pagebreak{
+  page-break-before: always;
+}
+
+thead {display: table-header-group;}
