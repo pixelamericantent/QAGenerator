@@ -1868,10 +1868,12 @@ var bomLogic =
   ]
 }
 var invoiceNumber = "";
+var textileRoomItemList =[];
+var poleRoomItemList =[];
 
 function generateQASheet() {
   console.log("extracting");
-  try{
+  //try{
     //get pasted code
     let html = document.getElementById("val").value;
 
@@ -1899,14 +1901,15 @@ function generateQASheet() {
     }
     console.log(invoiceItems);
     calculatePickList(invoiceItems);
-  } catch (err) {
+  /*} catch (err) {
     alert("Error parsing data. Please make sure you correctly copied the first line of code on the invoice page. If the problem persists, email Pixel with a screenshot this error, the invoice number, and the code you copied to your clipboard.\n\n" + err);
   }
+  */
 }
 
 function calculatePickList(invoiceItems) {
   console.log("calculating");
-  try{
+  //try{
     //store the results here
     let notIncluded = []; //invoice items without a BOM
     let pickList = {};
@@ -1918,7 +1921,7 @@ function calculatePickList(invoiceItems) {
         //a bom exists for this invoice item
         let bom = bomLogic[invoiceItem.t];
         for (let j = 0; j < bom.length; j++){
-          //for every entry in the bom
+          //for every en//try in the bom
           let bomItem = {
             t: bom[j][0],
             q: bom[j][1],
@@ -1939,118 +1942,150 @@ function calculatePickList(invoiceItems) {
         notIncluded.push(invoiceItem);
         if (invoiceItem.t.toLowerCase().indexOf("pole tent top")>0 || invoiceItem.t.toLowerCase().indexOf("frame tent top")>0) {
           let string = invoiceItem.t.toLowerCase();
-          //let regex = /\d+x\d+/g;
-          let dims = /\d+x\d+/g.exec(string)[0];
-          let width = /^\d+/g.exec(dims)[0];
-          let length = /\d+$/g.exec(dims)[0];
-          width = Number(width);
-          length = Number(length);
-          let perimeter = (width+length)*2;
+          let perimeter, perimeterString;
+
+          if (!/custom/.test(string)){
+            let dims = /\d+x\d+/g.exec(string)[0];
+            let width = /^\d+/g.exec(dims)[0];
+            let length = /\d+$/g.exec(dims)[0];
+            width = Number(width);
+            length = Number(length);
+            perimeter = (width+length)*2;
+            perimeterString = Math.floor(perimeter/12) + "\'" + perimeter%12 + "\" ("+perimeter+"\")"
+          } else {
+            perimeterString = "Custom Length";
+          }
+
           notIncluded.push({
-            t: "Perimeter Rope, " + Math.floor(perimeter/12) + "\'" + perimeter%12 + "\" ("+perimeter+"\")",
+            t: "Perimeter Rope, " + perimeterString,
             q: invoiceItem.q,
             d: "For " + invoiceItem.t
-          })
+          });
         }
       }
     }
     buildQaSheet(pickList, notIncluded);
-  } catch (err) {
+  /*} catch (err) {
     alert("Error Calculating Picklist. Please screenshot this error, take note of the invoice number, and contact Pixel. \n\n" + err);
+  }
+  */
+}
+
+function populateTable(tableID, sectionString, headers, data){
+  //establish reference to HTML
+  let table = document.getElementById(tableID);
+
+
+
+
+
+
+  //populate data
+  for (let item of data) {
+    row = table.insertRow();
+
+    cell = row.insertCell();
+    text = document.createTextNode(item.t);
+    cell.appendChild(text);
+
+    cell = row.insertCell();
+    cell.innerHTML = "<ul>"+item.d+"</ul>";
+    //cell.setAttribute("class", "small");
+
+    cell = row.insertCell();
+    text = document.createTextNode(item.q);
+    cell.appendChild(text);
+
+    cell = row.insertCell();
+    cell = row.insertCell();
+    cell = row.insertCell();
+    cell = row.insertCell();
+  }
+
+  var row, cell, text, thead;
+
+  //Create Section Title
+  thead = table.createTHead();
+  row = thead.insertRow();
+  cell = row.insertCell();
+  text = document.createTextNode(sectionString);
+  cell.appendChild(text);
+  cell.setAttribute("colspan", 7);
+  cell.setAttribute("class", "section");
+
+  //create Headers
+  row = thead.insertRow();
+  for (let val of headers) {
+    let th = document.createElement("th");
+    text = document.createTextNode(val);
+    th.appendChild(text);
+    row.appendChild(th);
   }
 }
 
 function buildQaSheet(pickList, notIncluded) {
   console.log("building");
-  try {
+  //try {
     let form = document.getElementById("form");
     form.style.display = "none";
 
-    //build the QATable
-    let table = document.getElementById("QAtable");
-    let headers = ["Part Name", "Description", "Order Quantity", "Check 1 Quantity", "Check 1 Initials", "Check 2 Quantity", "Check 2 Initials"];
-
-    //Create Headers
-    var row, cell, text, thead;
-
-    thead = table.createTHead();
-    row = thead.insertRow();
-    for (let val of headers) {
-      let th = document.createElement("th");
-      text = document.createTextNode(val);
-      th.appendChild(text);
-      row.appendChild(th);
-    }
-
-    row = table.insertRow();
-    cell = row.insertCell();
-    text = document.createTextNode("Invoice Items By Parts");
-    cell.appendChild(text);
-    cell.setAttribute("colspan", 7);
-    cell.setAttribute("class", "section");
-
-    //Create Table
-    let keys = Object.keys(pickList);
-    for (let key of keys) {
-      let item = pickList[key];
-      row = table.insertRow();
-
-      cell = row.insertCell();
-      text = document.createTextNode(item.t);
-      cell.appendChild(text);
-
-      cell = row.insertCell();
-      cell.innerHTML = "<ul>"+item.d+"</ul>";
-      cell.setAttribute("class", "small");
-
-      cell = row.insertCell();
-      text = document.createTextNode(item.q);
-      cell.appendChild(text);
-
-      cell = row.insertCell();
-      cell = row.insertCell();
-      cell = row.insertCell();
-      cell = row.insertCell();
-    }
-
-    //Invoice items without a BOM
-
-    //Create Table
-    row = table.insertRow();
-    cell = row.insertCell();
-    text = document.createTextNode("Remaining Invoice Items");
-    cell.appendChild(text);
-    cell.setAttribute("colspan", 7);
-    cell.setAttribute("class", "section");
-
-
+    //remove blanks from the notincluded array of objects
+    console.log("hallo");
     for (let i = 0; i < notIncluded.length; i++) {
       if(notIncluded[i].t||notIncluded[i].d||notIncluded[i].q){
-        row = table.insertRow();
-
-        cell = row.insertCell();
-        text = document.createTextNode(notIncluded[i].t);
-        cell.appendChild(text);
-
-        cell = row.insertCell();
-        text = document.createTextNode(notIncluded[i].d);
-        cell.appendChild(text);
-
-        cell = row.insertCell();
-        text = document.createTextNode(notIncluded[i].q);
-        cell.appendChild(text);
-
-        cell = row.insertCell();
-        cell = row.insertCell();
-        cell = row.insertCell();
-        cell = row.insertCell();
+        sortByRoom(notIncluded[i]);
       }
     }
+    console.log("hai");
+    Object.getOwnPropertyNames(pickList).forEach(item => {
+      sortByRoom(pickList[item]);
+    });
+
+    poleRoomItemList.sort()
+    textileRoomItemList.sort();
+
+    //build the QATables
+    let headers = ["Part Name", "Description", "Order Quantity", "Check 1 Quantity", "Check 1 Initials", "Check 2 Quantity", "Check 2 Initials"];
+    populateTable("pole-room","Pole Room",headers,poleRoomItemList);
+    populateTable("textile-room","Textile Room",headers,textileRoomItemList);
 
     document.getElementById("results").style.display="initial";
     document.body.style.zoom = 0.5;
     window.print();
-  } catch (err) {
+  /*} catch (err) {
     alert("Error generating QA Table. Screenshot this message, take note of the invoice number, and contact Pixel. " + err);
   }
+  */
+}
+
+function sortByRoom (item) {
+  let title = item.t.toLowerCase();
+
+  if (title == "Frame:Custom Frame:Custom Frame Packages:Custom Frame Pole/Fitting Package".toLowerCase()) {
+    let poleItem = {
+      t:"Frame:Custom Frame:Custom Frame Packages:Custom Frame Pole Package",
+      d:item.d,
+      q:item.q
+    };
+    poleRoomItemList.push(poleItem);
+    let textileItem = {
+      t:"Frame:Custom Frame:Custom Frame Packages:Custom Frame Fittings Package",
+      d:item.d,
+      q:item.q
+    };
+    textileRoomItemList.push(textileItem);
+    return;
+  }
+
+  let inPoleRoom =
+    0 <= title.indexOf("Pole/Tie-down Package".toLowerCase()) ||
+    0 <= title.indexOf("Pole/Tie-down Package".toLowerCase()) ||
+    0 <= title.indexOf("Frame Jack".toLowerCase()) ||
+    0 <= title.indexOf("Frame Poles:".toLowerCase()) ||
+    0 <= title.indexOf("Side Poles:".toLowerCase()) ||
+    0 <= title.indexOf("' Cable".toLowerCase()) ||
+    0 <= title.indexOf("Structural : Frame Tent : Poles :".toLowerCase());
+
+  let room = inPoleRoom ? poleRoomItemList : textileRoomItemList;
+  room.push(item);
 }
