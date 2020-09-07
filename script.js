@@ -1475,7 +1475,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      204
+      218
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1484,6 +1484,10 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
+    ],
+    [
+      "Structural : Frame Tent : Poles : 16'1",
+      7
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1500,6 +1504,10 @@ var bomLogic =
     [
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       7
+    ],
+    [
+      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
+      14
     ]
   ],
   "Frame:40 Frame:40 Frame Packages:40x40 Frame Pole/Fitting Package": [
@@ -1599,7 +1607,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      148
+      154
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1608,6 +1616,10 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
+    ],
+    [
+      "Structural : Frame Tent : Poles : 16'1",
+      3
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1624,6 +1636,10 @@ var bomLogic =
     [
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       3
+    ],
+    [
+      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
+      6
     ]
   ],
   "Frame:40 Frame:40 Frame Packages:40x80 Frame Pole/Fitting Package": [
@@ -1665,7 +1681,7 @@ var bomLogic =
     ],
     [
       "Structural : Frame Tent : Pins : R-Pin",
-      176
+      186
     ],
     [
       "Structural : Frame Tent : Poles : 10'6",
@@ -1674,6 +1690,10 @@ var bomLogic =
     [
       "Structural : Frame Tent : Poles : 14'4",
       16
+    ],
+    [
+      "Structural : Frame Tent : Poles : 16'1",
+      5
     ],
     [
       "Structural : Frame Tent : Poles : 21'10.5",
@@ -1691,6 +1711,10 @@ var bomLogic =
       "Structural : Frame Tent : Reinforcement : 40' Cable",
       5
     ],
+    [
+      "Structural : Frame Tent : Reinforcement : Cross Bar Clamp",
+      10
+    ]
   ],
   "Accessories:Frame Fittings:6-way Crown": [
     [
@@ -1913,6 +1937,21 @@ function calculatePickList(invoiceItems) {
         }
       } else {
         notIncluded.push(invoiceItem);
+        if (invoiceItem.t.toLowerCase().indexOf("pole tent top")>0 || invoiceItem.t.toLowerCase().indexOf("frame tent top")>0) {
+          let string = invoiceItem.t.toLowerCase();
+          //let regex = /\d+x\d+/g;
+          let dims = /\d+x\d+/g.exec(string)[0];
+          let width = /^\d+/g.exec(dims)[0];
+          let length = /\d+$/g.exec(dims)[0];
+          width = Number(width);
+          length = Number(length);
+          let perimeter = (width+length)*2;
+          notIncluded.push({
+            t: "Perimeter Rope, " + Math.floor(perimeter/12) + "\'" + perimeter%12 + "\" ("+perimeter+"\")",
+            q: invoiceItem.q,
+            d: "For " + invoiceItem.t
+          })
+        }
       }
     }
     buildQaSheet(pickList, notIncluded);
