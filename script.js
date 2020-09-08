@@ -1194,7 +1194,7 @@ var bomLogic =
       26
     ]
   ],
-  "Frame:30 Frame:30 Frame Packages:30x30 Frame Pole/Fitting Packagee": [
+  "Frame:30 Frame:30 Frame Packages:30x30 Frame Pole/Fitting Package": [
     [
       "Structural : Frame Tent : Fittings : 4-Way Side Tee",
       2
